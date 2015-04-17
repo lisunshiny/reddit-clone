@@ -1,0 +1,9 @@
+<h2> Hi <%= @user.username %> </h2>
+
+<a href="<%= edit_user_url %>">Edit my profile</a>
+
+<form action="<%= user_url(@user) %>" method="post">
+  <input type="hidden" name="_method" value="delete">
+  <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+  <button>Delete</button>
+</form>

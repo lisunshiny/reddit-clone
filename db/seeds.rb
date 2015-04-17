@@ -14,7 +14,6 @@ post3.subs << sub2
 
 post1.subs << sub2
 
-
 postsub1 = post1.post_subs.new(sub_id: sub1.id)
 postsub2 = post1.post_subs.new(sub_id: sub2.id)
 postsub3 = post2.post_subs.new(sub_id: sub1.id)
