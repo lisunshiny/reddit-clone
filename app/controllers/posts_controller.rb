@@ -3,9 +3,15 @@ class PostsController < ApplicationController
 
   def create
     @post = Post.new(post_params)
+    @post.author_id = current_user.id
+    #["1", "3", "4"] Sub.find(4)
+    params[:post][:sub_ids].keys.each do |sub_id|
+      @post.subs << Sub.find(sub_id.to_i)
+      @post.post_subs.new(sub_id: sub_id)
+    end
 
-    if @post.save
-      redirect_to sub_url(@post.sub)
+    if @post.save!
+      redirect_to sub_url(@post.subs.first)
     else
       render :new
     end
@@ -41,7 +47,7 @@ class PostsController < ApplicationController
 
   private
     def post_params
-      params.require(:posts).permit(:title, :url, :content, :author_id)
+      params.require(:post).permit(:title, :url, :content, :author_id, :sub_ids)
     end
 
     def is_author

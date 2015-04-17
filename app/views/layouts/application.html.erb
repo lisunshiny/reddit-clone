@@ -5,7 +5,7 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-
+<a href="<%= subs_url %>">Home</a>
 <% if current_user.nil? %>
   <a href="<%= new_user_url %>">Sign up</a>
   <a href="<%= new_session_url %>">Log in</a>

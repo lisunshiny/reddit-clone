@@ -1,10 +1,11 @@
 class SubsController < ApplicationController
 
+  before_action :is_logged_in, only: [:create, :new]
   before_action :is_moderator, only: [:edit, :update]
 
   def create
     @sub = Sub.new(sub_params)
-
+    @sub.moderator_id = current_user.id
     if @sub.save
       redirect_to sub_url(@sub)
     else
@@ -58,6 +59,10 @@ class SubsController < ApplicationController
       unless current_user == @sub.moderator
         redirect_to sub_url(@sub)
       end
+    end
+
+    def is_logged_in
+      redirect_to subs_url unless logged_in?
     end
 
 end
