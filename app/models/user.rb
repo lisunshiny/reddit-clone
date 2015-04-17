@@ -1,7 +1,7 @@
 class User < ActiveRecord::Base
 
   validates :username, :session_token, presence: true, uniqueness: true
-  validates :password, length: { minimum: 6 }
+  validates :password, allow_nil: true, length: { minimum: 6 }
 
   attr_reader :password
 
@@ -36,10 +36,10 @@ class User < ActiveRecord::Base
     self.password_digest = BCrypt::Password.create(password)
   end
 
-  def find_by_credentials(username, password)
-    user = User.find_by(username: username)
+  def self.find_by_credentials(options = {})
+    user = User.find_by(username: options[:username])
     return nil if user.nil?
-    if BCrypt::Password.new(password_digest) == password
+    if BCrypt::Password.new(user.password_digest) == options[:password]
       user
     else
       nil
