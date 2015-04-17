@@ -1,0 +1,25 @@
+<form action="<%= url %>" method="post">
+  <input type="hidden" name="_method" value="<%= method %>">
+  <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+  <br>
+  <label for="post_title">Title</label>
+  <input type="text" name="post[title]" value="<%= post.title %>" id="post_title">
+  <br>
+  <label for="post_url">URL</label>
+  <input type="text" name="post[url]" value="<%= post.url  %>" id="post_url">
+  <br>
+  <label for="post_content">content</label>
+  <textarea name="post[content]" value="<%= post.content %>" id="post_content"></textarea>
+  <br>
+  <% Sub.all.each do |sub| %>
+    <input
+      type="checkbox"
+      name="post[sub_ids][]"
+      value="<%= sub.id %>"
+      <%= "selected" if post.subs.include?(sub) %>
+      >
+      <label><%= sub.title %></label>
+      <br>
+    <% end %>
+    <button>Submit!</button>
+</form>

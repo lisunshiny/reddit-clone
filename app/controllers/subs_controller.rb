@@ -4,8 +4,8 @@ class SubsController < ApplicationController
   before_action :is_moderator, only: [:edit, :update]
 
   def create
-    @sub = Sub.new(sub_params)
-    @sub.moderator_id = current_user.id
+    @sub = current_user.subs.new(sub_params)
+
     if @sub.save
       redirect_to sub_url(@sub)
     else

@@ -11,6 +11,7 @@
   <a href="<%= new_session_url %>">Log in</a>
 <% else %>
   <%= current_user.username %>
+  <a href="<%= new_post_url %>">New Post</a>
   <form action="<%= session_url %>" method="POST">
     <input type="hidden" name="_method" value="DELETE">
     <input type="hidden" name="authenticity_token"

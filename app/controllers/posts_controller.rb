@@ -2,15 +2,9 @@ class PostsController < ApplicationController
   before_action :is_author, only: [:edit, :update]
 
   def create
-    @post = Post.new(post_params)
-    @post.author_id = current_user.id
-    #["1", "3", "4"] Sub.find(4)
-    params[:post][:sub_ids].keys.each do |sub_id|
-      @post.subs << Sub.find(sub_id.to_i)
-      @post.post_subs.new(sub_id: sub_id)
-    end
+    @post = current_user.posts.new(post_params)
 
-    if @post.save!
+    if @post.save
       redirect_to sub_url(@post.subs.first)
     else
       render :new
@@ -25,7 +19,8 @@ class PostsController < ApplicationController
 
   def edit
     @post = Post.find(params[:id])
-
+    # @old_subs = @post.subs
+    # @new_subs = params[:post][:sub_ids].keys
     render :edit
   end
 
@@ -39,7 +34,7 @@ class PostsController < ApplicationController
     @post = Post.find(params[:id])
 
     if @post.update(post_params)
-      redirect_to sub_url(@post.sub)
+      redirect_to sub_url(@post.subs.first)
     else
       render :edit
     end
@@ -47,13 +42,13 @@ class PostsController < ApplicationController
 
   private
     def post_params
-      params.require(:post).permit(:title, :url, :content, :author_id, :sub_ids)
+      params.require(:post).permit(:title, :url, :content, :author_id, sub_ids: [])
     end
 
     def is_author
       @post = Post.find(params[:id])
       unless current_user == @post.author
-        redirect_to sub_url(@post.sub)
+        redirect_to sub_url(@post.subs.first)
       end
     end
 
